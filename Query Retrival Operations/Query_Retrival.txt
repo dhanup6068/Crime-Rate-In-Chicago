@@ -1,0 +1,24 @@
+1.
+agr=[{'$group':{'_id': '$Primary Type','TotalCases':{'$sum':1}}}]
+val=list(data.aggregate(agr))
+val
+
+
+
+2.
+agr=[{'$group':{'_id': '$Year','TotalCases':{'$sum':1}}}]
+val=list(data.aggregate(agr))
+val
+
+
+
+3.
+agr=[{'$group':{'_id': '$Location Description','TotalCases':{'$sum':1}}}]
+val=list(data.aggregate(agr))
+val
+
+
+4.
+agr=[{'$group': {'TotalCases': {'$sum': 1}, '_id': {'location': '$Location Description', 'year': '$Year'}}},{'$sort' : {'TotalCases' :-1}}]
+val=list(data.aggregate(agr))
+val

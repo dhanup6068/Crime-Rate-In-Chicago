@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pie Chart</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+.inside{
+font-size:25px;
+
+fill:white;
+}
+.label{
+font-size:25px;
+
+}
+
+</style>
+
+</head>
+<body>
+<script>
+var width=2000, height= 2000;
+var colors= d3.scaleOrdinal(['#4daf4a','#377eb8','#ff7f00','#984ea3','#e41a1c','#CD5C5C','#F08080','#FA8072','#E9967A','#FFA07A','#FF7F50','#FF6347','#FF4500','#FFD700','#FFA500','#FF8C00']);
+var svg = d3.select("body").append("svg")
+.attr("width",width).attr("height",height)
+.style("background","pink");
+
+var details = [{grade:"ARSON",number:1785},{grade:"ASSAULT",number:86302},{grade:"BATTERY",number:25233},{grade:"BURGLARY",number:80302},{grade:"CRIMINAL DAMAGE",number:149655},{grade:"CRIMINAL TRESPASS",number:34264},{grade:"CRIM SEXUAL ASSAULT",number:5061},{grade:"DECEPTIVE PRACTICE",number:62857},{grade:"GAMBLING",number:2100},{grade:"HOMICIDE",number:1837},{grade:"INTERFERENCE WITH PUBLIC OFFICER",number:5272},{grade:"KIDNAPPING",number:52},{grade:"MOTOR VEHICLE THEFT",number:59164},{grade:"NARCOTICS",number:125346},{grade:"OFFENSE INVOLVING CHILDREN",number:7661},{grade:"OTHER OFFENSE",number:80854},{grade:"PROSTITUTION",number:6009},{grade:"PUBLIC PEACE VIOLATION",number:9744},{grade:"ROBBERY",number:53400},{grade:"SEX OFFENSE",number:2792},{grade:"STALKING",number:564},{grade:"THEFT",number:313230},{grade:"WEAPONS VIOLATION",number:13315}];
+
+var data= d3.pie().sort(null).value(function(d){return d.number;})(details);
+(details);
+var segments = d3.arc()
+.innerRadius(0)
+.outerRadius(320)
+.padAngle(.05)
+.padRadius(50);
+
+var sections = svg.append("g").attr("transform","translate(500,500)")
+.selectAll("path").data(data);
+sections.enter().append("path").attr("d",segments).attr("fill",function(d){return colors(d.data.number);});
+
+var content= d3.select("g").selectAll("text").data(data);
+content.enter().append("text").classed("inside", true).each(function(d){
+var center = segments.centroid(d);
+d3.select(this).attr("x",center[0]).attr("y",center[1])
+  .text(d.data.number);
+});
+
+var legends = svg.append("g").attr("transform","translate(900,100)")
+ .selectAll(".legends").data(data);
+ 
+var legend = legends.enter().append("g").classed("legends",true).attr("transform", function(d,i){return "translate(0,"+(i+1)*30 +")";});
+
+legend.append("rect").attr("width",20).attr("height",20).attr("fill",function(d){return colors(d.data.number);});
+legend.append("text").classed("label",true).text(function(d){return d.data.grade;})
+ .attr("fill",function(d){return colors(d.data.number);})
+ .attr("x",30)
+ .attr("y",20);
+
+
+
+
+</script>
+</body>
+</html>
